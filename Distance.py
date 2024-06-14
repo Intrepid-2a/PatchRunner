@@ -130,10 +130,10 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
         "Stair")
 
 
-    x = 1
-    et_filename = 'dist' + ('LH' if hemifield == 'left' else 'RH')
-    while len(glob(eyetracking_path + et_filename + str(x) + '.*')):
-        x += 1
+    # x = 1
+    # et_filename = 'dist' + ('LH' if hemifield == 'left' else 'RH')
+    # while len(glob(eyetracking_path + et_filename + str(x) + '.*')):
+    #     x += 1
 
     # get everything shared from central:
     setup = localizeSetup(location=location, trackEyes=[False,False], filefolder=None, filename=None, task='distance', ID=ID) # data path is for the mapping data, not the eye-tracker data!
