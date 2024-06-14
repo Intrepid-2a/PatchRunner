@@ -9,7 +9,7 @@ TWCF IIT vs PP experiment 2a
 
 import sys, os
 sys.path.append(os.path.join('..', 'EyeTracking'))
-from EyeTracking import localizeSetup, EyeTracker
+from EyeTracking import localizeSetup #, EyeTracker
 
 import math
 import time
