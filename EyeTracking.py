@@ -1517,14 +1517,16 @@ def localizeSetup( trackEyes, filefolder, filename, location=None, glasses='RG',
     else:
         raise Warning('glasses should be a string')
 
+    colors['both']  = [-1, -1, -1]
+
     # CALIBRATED COLORS:
 
     # for blind spot mapping, task == None, but it still needs the calibrated colors...
     # handle this in the function?
 
-    colors = getColors(colors=colors, 
-                       task=task, 
-                       ID=ID)
+    # colors = getColors(colors=colors, 
+    #                    task=task, 
+    #                    ID=ID)
 
 
     # WINDOW OBJECT
@@ -1591,31 +1593,31 @@ def localizeSetup( trackEyes, filefolder, filename, location=None, glasses='RG',
         fixation_x.lineColor = colors['both']
 
 
-    if not any(trackEyes):
-        tracker = 'mouse'
-        trackEyes = [True, False]
+    # if not any(trackEyes):
+    #     tracker = 'mouse'
+    #     trackEyes = [True, False]
 
-    print(filefolder)
+    # print(filefolder)
 
-    ET = EyeTracker(tracker           = tracker,
-                    trackEyes         = trackEyes,
-                    fixationWindow    = 2.0,
-                    minFixDur         = 0.2,
-                    fixTimeout        = 3.0,
-                    psychopyWindow    = win,
-                    filefolder        = filefolder,
-                    filename          = filename,
-                    samplemode        = 'average',
-                    calibrationpoints = 5,
-                    colors            = colors )
+    # ET = EyeTracker(tracker           = tracker,
+    #                 trackEyes         = trackEyes,
+    #                 fixationWindow    = 2.0,
+    #                 minFixDur         = 0.2,
+    #                 fixTimeout        = 3.0,
+    #                 psychopyWindow    = win,
+    #                 filefolder        = filefolder,
+    #                 filename          = filename,
+    #                 samplemode        = 'average',
+    #                 calibrationpoints = 5,
+    #                 colors            = colors )
 
-    if location == 'toronto':
-        if not tracker == 'mouse':
-            ET.initialize(calibrationPoints = np.array([[0,0],   [-10.437,0],[0,5.916],[10.437,0],[0,-5.916]                                 ]) )
-        else:
-            ET.initialize()
-    else:
-        ET.initialize()
+    # if location == 'toronto':
+    #     if not tracker == 'mouse':
+    #         ET.initialize(calibrationPoints = np.array([[0,0],   [-10.437,0],[0,5.916],[10.437,0],[0,-5.916]                                 ]) )
+    #     else:
+    #         ET.initialize()
+    # else:
+    #     ET.initialize()
 
     fcols = [[-1,-1,-1],[1,1,1]]
     if 'both' in colors.keys():
@@ -1649,7 +1651,7 @@ def localizeSetup( trackEyes, filefolder, filename, location=None, glasses='RG',
 
 
     return( {'win'              : win,
-             'tracker'          : ET,
+            #  'tracker'          : ET,
              'colors'           : colors,
              'fusion'           : fusion,
              'fixation'         : fixation,
@@ -1657,44 +1659,44 @@ def localizeSetup( trackEyes, filefolder, filename, location=None, glasses='RG',
              'blindspotmarkers' : blindspotmarkers,
              'paths'            : paths } )
 
-def getColors(colors={}, task=None, ID=None):
+# def getColors(colors={}, task=None, ID=None):
 
-    if task == None:
-        print('warning: task must be specified to read calibrated colors, skipping')
-        return(colors)
+#     if task == None:
+#         print('warning: task must be specified to read calibrated colors, skipping')
+#         return(colors)
 
-    if ID == None:
-        print('warning: ID must be specified to read calibrated colors, skipping')
-        return(colors)
+#     if ID == None:
+#         print('warning: ID must be specified to read calibrated colors, skipping')
+#         return(colors)
 
-    ## colour (eye) parameters
-    all_files = glob('../data/' + task + '/color/' + ID + '_col_cal*.txt')
-    if len(all_files) == 0:
-        # no color calibration done, skip
-        return(colors)
+#     ## colour (eye) parameters
+#     all_files = glob('../data/' + task + '/color/' + ID + '_col_cal*.txt')
+#     if len(all_files) == 0:
+#         # no color calibration done, skip
+#         return(colors)
 
-    # find the largest color calibration file index:
-    idx = np.argmax([int(os.path.splitext(os.path.basename(x))[0].split('_')[3]) for x in all_files])
+#     # find the largest color calibration file index:
+#     idx = np.argmax([int(os.path.splitext(os.path.basename(x))[0].split('_')[3]) for x in all_files])
     
-    col_file = open(all_files[idx],'r')
-    col_param = col_file.read().replace('\t','\n').split('\n')
-    col_file.close()
-    # print(col_param)
-    # let's flip this depending on the task run, in each of the experiments?
-    # col_ipsi = eval(col_param[3]) if hemifield == 'left' else eval(col_param[5]) # left or right
-    # col_cont = eval(col_param[5]) if hemifield == 'left' else eval(col_param[3]) # right or left
+#     col_file = open(all_files[idx],'r')
+#     col_param = col_file.read().replace('\t','\n').split('\n')
+#     col_file.close()
+#     # print(col_param)
+#     # let's flip this depending on the task run, in each of the experiments?
+#     # col_ipsi = eval(col_param[3]) if hemifield == 'left' else eval(col_param[5]) # left or right
+#     # col_cont = eval(col_param[5]) if hemifield == 'left' else eval(col_param[3]) # right or left
 
-    # so use the left / right things for now
-    colors['left']  = eval(col_param[3])
-    colors['right'] = eval(col_param[5])
+#     # so use the left / right things for now
+#     colors['left']  = eval(col_param[3])
+#     colors['right'] = eval(col_param[5])
 
-    # 'both' should be defined in 1 way... up for grabs how, afaic
-    # colors['both']  = [-0.7, -0.7, -0.7] # from 2nd FBE version of the distance task
+#     # 'both' should be defined in 1 way... up for grabs how, afaic
+#     # colors['both']  = [-0.7, -0.7, -0.7] # from 2nd FBE version of the distance task
 
-    # this comes down to black in ALL cases:
-    colors['both']  = [eval(col_param[3])[1], eval(col_param[5])[0], -1]
-    # print(colors)
-    return(colors)
+#     # this comes down to black in ALL cases:
+#     colors['both']  = [eval(col_param[3])[1], eval(col_param[5])[0], -1]
+#     # print(colors)
+#     return(colors)
 
     
 
@@ -1767,7 +1769,8 @@ def makeBlindSpotMarkers(win, task, ID, colors):
         print(spot_size)
 
 
-        blindspotmarkers[hemifield] = visual.Circle(win, radius = .5, pos = [7,0], units = 'deg', fillColor=colors[hemifield], lineColor = None)
+        # blindspotmarkers[hemifield] = visual.Circle(win, radius = .5, pos = [7,0], units = 'deg', fillColor=colors[hemifield], lineColor = None)
+        blindspotmarkers[hemifield] = visual.Circle(win, radius = .5, pos = [7,0], units = 'deg', fillColor=colors['both'], lineColor = None)
         blindspotmarkers[hemifield].pos = spot_cart
         blindspotmarkers[hemifield].size = spot_size
 
