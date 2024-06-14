@@ -238,13 +238,13 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     if hemifield == 'left':
         ipsi_pos_array = left_pos_array
         cont_pos_array = right_pos_array
-        # ipsi_tar = tar_left
-        # cont_tar = tar_right
+        ipsi_tar = tar_left
+        cont_tar = tar_right
     else:
         ipsi_pos_array = right_pos_array
         cont_pos_array = left_pos_array
-        # ipsi_tar = tar_right
-        # cont_tar = tar_left
+        ipsi_tar = tar_right
+        cont_tar = tar_left
 
     # this needs to be handled still:
 
@@ -640,6 +640,13 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             stairs_ongoing[which_stair] = revs[which_stair] <= nRevs or trial_stair[which_stair] < nTrials
 
         ## print trial
+
+        # need to know tar? whatever tar stands for....
+        if eye[which_stair] == 'left':
+            tar = tar_left
+        else:
+            tar = tar_right
+
         print(resp,
             pos[0],
             pos[1],
