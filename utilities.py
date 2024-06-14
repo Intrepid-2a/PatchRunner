@@ -49,9 +49,11 @@ def setupDataFolders(tasks='all'):
 
     if isinstance(tasks, str):
         if tasks == 'all':
-            tasks = ['distance',
-                     'area',
-                     'curvature']
+            tasks = ['distance'
+            # ,
+            #          'area',
+            #          'curvature'
+                     ]
 
     if not(isinstance(tasks, list)):
         return
@@ -75,9 +77,11 @@ def findParticipantIDs(tasks='all', subtasks='all'):
 
     if isinstance(tasks, str):
         if tasks == 'all':
-            tasks = ['distance',
-                     'area',
-                     'curvature']
+            tasks = ['distance'
+            # ,
+            #          'area',
+            #          'curvature'
+                     ]
 
     if isinstance(subtasks, str):
         if subtasks == 'all':
@@ -89,7 +93,9 @@ def findParticipantIDs(tasks='all', subtasks='all'):
 
     for task in tasks:
         for subtask in subtasks:
-            fullpathnames = glob.glob(os.path.join('..', 'data', task, subtask, '*.txt'))
+            localpathnames = glob.glob(os.path.join('..', 'data', task, subtask, '*.txt'))
+            # also avoid using the same names as in the main experiment... I guess?
+            fullpathnames = localpathnames + glob.glob(os.path.join('../../BlindSpot/', 'data', task, subtask, '*.txt'))
             filenames = [os.path.basename(x) for x in fullpathnames]
             taskIDs = [x.split('_')[0] for x in filenames]
 
@@ -114,20 +120,20 @@ def collectParticipantInfo():
                 'left'        : False,
                 'right'       : False
             },
-        'area' :
-            {
-                'color'       : False,
-                'mapping'     : False,
-                'left'        : False,
-                'right'       : False
-            },
-        'curvature' :
-            {
-                'color'       : False,
-                'mapping'     : False,
-                'left'        : False,
-                'right'       : False
-            }
+        # 'area' :
+        #     {
+        #         'color'       : False,
+        #         'mapping'     : False,
+        #         'left'        : False,
+        #         'right'       : False
+        #     },
+        # 'curvature' :
+        #     {
+        #         'color'       : False,
+        #         'mapping'     : False,
+        #         'left'        : False,
+        #         'right'       : False
+        #     }
     }
 
     # if location == None:
@@ -152,7 +158,8 @@ def collectParticipantInfo():
     for ID in participantIDs:
         participantInfo = copy.deepcopy(empty_participant)
 
-        for task in ['area', 'curvature', 'distance']:
+        # for task in ['area', 'curvature', 'distance']:
+        for task in ['distance']:
             for subtask in ['color','mapping','left','right']:
 
                 if subtask == 'color':
@@ -188,6 +195,7 @@ def getParticipantTaskInfo(ID):
 
             if subtask in ['LH', 'RH']:
                 file_list = glob.glob(os.path.join('..', 'data', task, ID + '*' + subtask + '*.txt' ) )
+                # these should be checked for completeness !!!
 
             if len(file_list):
                 info[task][subtask] = True
