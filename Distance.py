@@ -77,7 +77,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
 
     random.seed(ID+'distance')
 
-    trackEyes = [True, True]
+    # trackEyes = [True, True]
 
     # ## path
     # main_path = 'C:/Users/clementa/Nextcloud/project_blindspot/blindspot_eye_tracker/'
@@ -171,7 +171,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     
     fixation = setup['fixation']
 
-    tracker = setup['tracker']
+    # tracker = setup['tracker']
     
 
 
@@ -387,7 +387,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
         loFusion.resetProperties()
 
         ## pre trial fixation
-        tracker.waitForFixation()
+        # tracker.waitForFixation()
         gaze_out = False #? not sure what this variable is for but it needs to exist?
 
         # not sure, but the next while loop seems to be doing the same thing as "waitForFixation()"
@@ -483,7 +483,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
                 k = event.getKeys(['q']) # shouldn't this be space? like after the stimulus? this is confusing...
                 if k and 'q' in k:
                     abort = True
-                    tracker.comment('trial aborted') # task aborted?
+                    # tracker.comment('trial aborted') # task aborted?
                     break
                 
                 event.clearEvents(eventType='keyboard') # just to be sure?
