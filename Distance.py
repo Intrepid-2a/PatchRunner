@@ -30,7 +30,7 @@ from pyglet.window import key
 
 import sys, os
 sys.path.append(os.path.join('..', 'EyeTracking'))
-from EyeTracking import localizeSetup, EyeTracker
+from EyeTracking import localizeSetup #, EyeTracker
 
 ######
 #### Initialize experiment
@@ -305,7 +305,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
 
     #!!# start recording
 
-    pos_arrays = [pos_array_bsa[:]] * 4 + [pos_array_out[:]] * 4
+    
     intervals = [3.5,3, 2.5, 2, 1.5, 1, .5, 0, -.5, -1, -1.5, -2, -2.5, -3, -3.5]
     trial_clock = core.Clock()
 
@@ -323,6 +323,9 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     reversal = False
     resps = [[True],[False]] * 4
     stairs_ongoing = [True] * 8
+
+    # this is the tricky one...
+    pos_arrays = [pos_array_bsa[:]] * 4 + [pos_array_out[:]] * 4
 
     trial = 1
     abort = False
