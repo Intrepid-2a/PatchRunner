@@ -1745,12 +1745,12 @@ def makeBlindSpotMarkers(win, task, ID, colors):
             spot_cart = spot_left_cart
             spot      = spot_left
             spot_size = spot_left_size
-            tar       = spot_size[0] + 2 + 2
+            tar       = spot_size[0] + 2 + 2 + 1
         if hemifield == 'right':
             spot_cart = spot_righ_cart
             spot      = spot_righ
             spot_size = spot_righ_size
-            tar       = spot_size[0] + 2 + 2
+            tar       = spot_size[0] + 2 + 2 + 1
 
         # size of blind spot + 2 (dot width, padding)
         if hemifield == 'left' and spot_cart[1] < 0:
