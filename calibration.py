@@ -350,17 +350,17 @@ def doBlindSpotMapping(ID=None,task=None,location=None):
         abort = False
 
         if hemifield == 'left':
-            colors['ipsi'], colors['contra'] = colors['left'], colors['right']
+            colors['ipsi'], colors['contra'] = colors['both'], colors['both']
             filename = ID.lower() + '_LH_blindspot_'
             # win = visual.Window([1920,1080],allowGUI=True, monitor='ccni', units='deg', viewPos = [0,0], fullscr = True)
             # win = visual.Window(resolution, allowGUI=True, monitor=mymonitor, units='deg', viewPos = [0,0], fullscr=True, screen=1)
-            point = visual.Circle(cfg['hw']['win'], size = [1,1], pos = [-7,-1], fillColor=colors['left'], lineColor = None, units='deg')
+            point = visual.Circle(cfg['hw']['win'], size = [1,1], pos = [-7,-1], fillColor=colors['both'], lineColor = None, units='deg')
         else:
-            colors['ipsi'], colors['contra'] = colors['right'], colors['left']
+            colors['ipsi'], colors['contra'] = colors['both'], colors['both']
             filename = ID.lower() + '_RH_blindspot_'
             # win = visual.Window([1920,1080],allowGUI=True, monitor='ccni', units='deg', viewPos = [0,0], fullscr = True)
             # win = visual.Window(resolution, allowGUI=True, monitor=mymonitor, units='deg', viewPos = [0,0], fullscr=True, screen=1)
-            point = visual.Circle(cfg['hw']['win'], size = [1,1], pos = [7,-1], fillColor=colors['right'], lineColor = None, units='deg')
+            point = visual.Circle(cfg['hw']['win'], size = [1,1], pos = [7,-1], fillColor=colors['both'], lineColor = None, units='deg')
 
         # point.fillColor = [-1,-1,-1]
         # print(point.size)
