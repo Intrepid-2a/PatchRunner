@@ -239,7 +239,7 @@ def doColorCalibration(ID=None, task=None, location=None):
 
     # cfg['hw']['tracker'].stopcollecting()
     # cfg['hw']['tracker'].closefile()
-    cfg['hw']['tracker'].shutdown()
+    # cfg['hw']['tracker'].shutdown()
     cfg['hw']['win'].close() # should be after tracker shutdown, since tracker may use the window still...
 
 
@@ -312,7 +312,7 @@ def doBlindSpotMapping(ID=None,task=None,location=None):
     print(step)
 
     glasses = 'RG'
-    trackEyes = [True, True]
+    trackEyes = [False, False]
 
 
     setup = localizeSetup(location=location, glasses=glasses, trackEyes=trackEyes, filefolder=None, filename=None, task=task, ID=ID) # data path is for the mapping data, not the eye-tracker data!
@@ -337,8 +337,8 @@ def doBlindSpotMapping(ID=None,task=None,location=None):
         # initialization should've already been done for the case of Toronto?
         print('not toronto?')
         # cfg['hw']['tracker'].initialize()
-    cfg['hw']['tracker'].calibrate()
-    cfg['hw']['tracker'].startcollecting()
+    # cfg['hw']['tracker'].calibrate()
+    # cfg['hw']['tracker'].startcollecting()
     # print('tracking...')
 
     fixation_yes = setup['fixation']
@@ -388,7 +388,7 @@ def doBlindSpotMapping(ID=None,task=None,location=None):
 
         while 1:
             # k = event.getKeys(['up', 'down', 'left', 'right', 'q', 'w', 'a', 's', 'space', 'escape', '0'])
-            k = event.getKeys(['space', 'escape', '0', 'insert'])
+            k = event.getKeys(['space', 'escape', 'insert'])
 
             if k:
                 if 'escape' in k:
@@ -400,51 +400,51 @@ def doBlindSpotMapping(ID=None,task=None,location=None):
                 if pyg_keyboard[key.NUM_INSERT]:
                     break
 
-                if '0' in k:
+                # if '0' in k:
                     # cfg['hw']['tracker'].stopcollecting() # do we even have to stop/start collecting?
-                    cfg['hw']['tracker'].calibrate()
+                    # cfg['hw']['tracker'].calibrate()
                     # cfg['hw']['tracker'].startcollecting()
 
-            if cfg['hw']['tracker'].gazeInFixationWindow():
-                fixation = fixation_yes
-                
-                if pyg_keyboard[key.UP]:
-                    point.pos += [ 0, step]
-                if pyg_keyboard[key.DOWN]:
-                    point.pos += [ 0,-step]
-                if pyg_keyboard[key.LEFT]:
-                    point.pos += [-step, 0]
-                if pyg_keyboard[key.RIGHT]:
-                    point.pos += [ step, 0]
+            # if cfg['hw']['tracker'].gazeInFixationWindow():
+            fixation = fixation_yes
+            
+            if pyg_keyboard[key.UP]:
+                point.pos += [ 0, step]
+            if pyg_keyboard[key.DOWN]:
+                point.pos += [ 0,-step]
+            if pyg_keyboard[key.LEFT]:
+                point.pos += [-step, 0]
+            if pyg_keyboard[key.RIGHT]:
+                point.pos += [ step, 0]
 
-                if pyg_keyboard[key.Q]:
-                    point.size += [step,0]
-                if pyg_keyboard[key.W]:
-                    point.size = [max(step, point.size[0] - step), point.size[1]]
-                if pyg_keyboard[key.A]:
-                    point.size += [0, step]
-                if pyg_keyboard[key.S]:
-                    point.size = [point.size[0], max(step, point.size[1] - step)]
+            if pyg_keyboard[key.Q]:
+                point.size += [step,0]
+            if pyg_keyboard[key.W]:
+                point.size = [max(step, point.size[0] - step), point.size[1]]
+            if pyg_keyboard[key.A]:
+                point.size += [0, step]
+            if pyg_keyboard[key.S]:
+                point.size = [point.size[0], max(step, point.size[1] - step)]
 
-                if pyg_keyboard[key.NUM_UP]:
-                    point.pos += [ 0, step]
-                if pyg_keyboard[key.NUM_DOWN]:
-                    point.pos += [ 0,-step]
-                if pyg_keyboard[key.NUM_LEFT]:
-                    point.pos += [-step, 0]
-                if pyg_keyboard[key.NUM_RIGHT]:
-                    point.pos += [ step, 0]
+            if pyg_keyboard[key.NUM_UP]:
+                point.pos += [ 0, step]
+            if pyg_keyboard[key.NUM_DOWN]:
+                point.pos += [ 0,-step]
+            if pyg_keyboard[key.NUM_LEFT]:
+                point.pos += [-step, 0]
+            if pyg_keyboard[key.NUM_RIGHT]:
+                point.pos += [ step, 0]
 
-                if pyg_keyboard[key.NUM_HOME]:
-                    point.size += [step,0]
-                if pyg_keyboard[key.NUM_PAGE_UP]:
-                    point.size = [max(step, point.size[0] - step), point.size[1]]
-                if pyg_keyboard[key.NUM_END]:
-                    point.size += [0, step]
-                if pyg_keyboard[key.NUM_PAGE_DOWN]:
-                    point.size = [point.size[0], max(step, point.size[1] - step)]
-            else:
-                fixation = fixation_no
+            if pyg_keyboard[key.NUM_HOME]:
+                point.size += [step,0]
+            if pyg_keyboard[key.NUM_PAGE_UP]:
+                point.size = [max(step, point.size[0] - step), point.size[1]]
+            if pyg_keyboard[key.NUM_END]:
+                point.size += [0, step]
+            if pyg_keyboard[key.NUM_PAGE_DOWN]:
+                point.size = [point.size[0], max(step, point.size[1] - step)]
+            # else:
+            #     fixation = fixation_no
                 
             # if anything, fusion patterns should be below other stimuli:
             cfg['hw']['fusion']['hi'].draw()
@@ -464,7 +464,7 @@ def doBlindSpotMapping(ID=None,task=None,location=None):
             respFile.close()
 
 
-    cfg['hw']['tracker'].stopcollecting()
+    # cfg['hw']['tracker'].stopcollecting()
     # close files here? there shouldn't be any...
-    cfg['hw']['tracker'].shutdown()
+    # cfg['hw']['tracker'].shutdown()
     cfg['hw']['win'].close()
