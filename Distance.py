@@ -335,7 +335,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     stairs_ongoing = [True] * 8
 
     # this is the tricky one...
-    pos_arrays = [pos_array_bsa[:]] * 4 + [pos_array_out[:]] * 4
+    # pos_arrays = [pos_array_bsa[:]] * 4 + [pos_array_out[:]] * 4
 
     pos_arrays = [ipsi_pos_array_bsa[:]] * 2 + [cont_pos_array_bsa[:]] * 2 + [ipsi_pos_array_out[:]] * 2 + [cont_pos_array_out[:]] * 2
 
