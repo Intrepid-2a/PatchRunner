@@ -238,19 +238,24 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     if hemifield == 'left':
         ipsi_pos_array = left_pos_array
         cont_pos_array = right_pos_array
-        ipsi_tar = tar_left
-        cont_tar = tar_right
+        # ipsi_tar = tar_left
+        # cont_tar = tar_right
     else:
         ipsi_pos_array = right_pos_array
         cont_pos_array = left_pos_array
-        ipsi_tar = tar_right
-        cont_tar = tar_left
+        # ipsi_tar = tar_right
+        # cont_tar = tar_left
 
     # this needs to be handled still:
 
     # pos_array_bsa = pos_array[0:2]
     # pos_array_out = pos_array[2:4]
 
+    ipsi_pos_array_bsa = ipsi_pos_array[0:2]
+    ipsi_pos_array_out = ipsi_pos_array[2:4]
+
+    cont_pos_array_bsa = cont_pos_array[0:2]
+    cont_pos_array_out = cont_pos_array[2:4]
 
     ######
     #### Prepare eye tracking
@@ -259,49 +264,49 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     ## setup and initialize eye-tracker + gaze ok region etc.
     #!!#
 
-    # first calibration
-    visual.TextStim(win,'Calibration...', color = col_both, units = 'deg', pos = (0,-2)).draw()
-    fixation.draw()
-    win.flip()
-    k = event.waitKeys()
-    if k[0] in ['q']:
-        respFile.close()
+    # # first calibration
+    # visual.TextStim(win,'Calibration...', color = col_both, units = 'deg', pos = (0,-2)).draw()
+    # fixation.draw()
+    # win.flip()
+    # k = event.waitKeys()
+    # if k[0] in ['q']:
+    #     respFile.close()
 
-        # send quit comment
-        # stop tracking
-        # close file
-        # shutdown eye-tracker
+    #     # send quit comment
+    #     # stop tracking
+    #     # close file
+    #     # shutdown eye-tracker
 
-        win.close()
-        core.quit()
+    #     win.close()
+    #     core.quit()
     
-    event.clearEvents(eventType='keyboard') # just to be sure?
+    # event.clearEvents(eventType='keyboard') # just to be sure?
         
-    #!!# calibrate
-    #tracker.initialize() # this should be done in the central thing... dependent on location: in Toronto we need to override the calibrationTargets
+    # #!!# calibrate
+    # #tracker.initialize() # this should be done in the central thing... dependent on location: in Toronto we need to override the calibrationTargets
 
-    tracker.openfile()
-    tracker.startcollecting()
-    tracker.calibrate()
+    # # tracker.openfile()
+    # # tracker.startcollecting()
+    # # tracker.calibrate()
     
     fixation.draw()
     win.flip()
 
-    k = event.waitKeys()
-    if k[0] in ['q']:
-        respFile.close()
+    # k = event.waitKeys()
+    # if k[0] in ['q']:
+    #     respFile.close()
 
-        # send quit comment
-        # stop tracking
-        # close file
-        # shutdown eye-tracker
+    #     # send quit comment
+    #     # stop tracking
+    #     # close file
+    #     # shutdown eye-tracker
 
-        #! empty buffer?
+    #     #! empty buffer?
 
-        win.close()
-        core.quit()
+    #     win.close()
+    #     core.quit()
     
-    event.clearEvents(eventType='keyboard') # just to be sure?
+    # event.clearEvents(eventType='keyboard') # just to be sure?
 
     #!!# start recording
 
@@ -314,7 +319,12 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     ######
 
     foil_type = [1, -1] * 4
-    eye = ['left', 'left', 'right', 'right'] * 2
+
+    if hemifield == 'left':
+        eye = ['left', 'left', 'right', 'right'] * 2
+    else:
+        eye = ['right', 'right', 'left', 'left'] * 2
+
     position = [[]] * 8
     trial_stair = [0] * 8
     revs = [0] * 8
@@ -326,6 +336,8 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
 
     # this is the tricky one...
     pos_arrays = [pos_array_bsa[:]] * 4 + [pos_array_out[:]] * 4
+
+    pos_arrays = [ipsi_pos_array_bsa[:]] * 2 + [cont_pos_array_bsa[:]] * 2 + [ipsi_pos_array_out[:]] * 2 + [cont_pos_array_out[:]] * 2
 
     trial = 1
     abort = False
@@ -360,16 +372,16 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             point_1.pos = pol2cart(positions[pos[1]][0][0], positions[pos[1]][0][1]       + shift[1])
             point_2.pos = pol2cart(positions[pos[1]][1][0], positions[pos[1]][1][1] + dif + shift[1])
 
-        if eye[which_stair] == hemifield:
-            point_1.fillColor = col_ipsi
-            point_2.fillColor = col_ipsi
-            point_3.fillColor = col_ipsi
-            point_4.fillColor = col_ipsi
-        else:
-            point_1.fillColor = col_contra
-            point_2.fillColor = col_contra
-            point_3.fillColor = col_contra
-            point_4.fillColor = col_contra
+        # if eye[which_stair] == hemifield:
+        #     point_1.fillColor = col_ipsi
+        #     point_2.fillColor = col_ipsi
+        #     point_3.fillColor = col_ipsi
+        #     point_4.fillColor = col_ipsi
+        # else:
+        #     point_1.fillColor = col_contra
+        #     point_2.fillColor = col_contra
+        #     point_3.fillColor = col_contra
+            # point_4.fillColor = col_contra
         
         hiFusion.resetProperties()
         loFusion.resetProperties()
@@ -413,13 +425,13 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
         #         break
         
         # should the trial start be here, or maybe when waiting for fixation?
-        tracker.comment('start trial %d'%(trial))
+        # tracker.comment('start trial %d'%(trial))
 
         # in reverse order, so we can pop() them off:
-        stim_comments = ['pair 2 off', 'pair 1 off', 'pair 2 on', 'pair 1 on']
+        # stim_comments = ['pair 2 off', 'pair 1 off', 'pair 2 on', 'pair 1 on']
 
 
-        if not gaze_out:
+        if True:
             ## trial
             
             # blindspot.draw()
@@ -428,7 +440,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             # fixation.draw()
             # win.flip()
             trial_clock.reset()
-            gaze_in_region = True
+            # gaze_in_region = True
         
             while trial_clock.getTime() < 1.3 and not abort:
                 t = trial_clock.getTime()
@@ -437,10 +449,10 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
                 #!!# if position is invalid or >2 dva, set gaze in region to False
                 #!!# may also record gazes in file here and do stuff like showing gaze position if simulating with mouse
                 
-                if not tracker.gazeInFixationWindow():
-                    gaze_out = True
-                    tracker.comment('trial aborted')
-                    break
+                # if not tracker.gazeInFixationWindow():
+                #     gaze_out = True
+                #     tracker.comment('trial aborted')
+                #     break
 
                 fixation.draw()
                 blindspot.draw()
@@ -448,20 +460,20 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
                 loFusion.draw()
 
                 if .1 <= trial_clock.getTime() < .5:
-                    if len(stim_comments) == 4:
-                        tracker.comment(stim_comments.pop()) # pair 1 on
+                    # if len(stim_comments) == 4:
+                    #     tracker.comment(stim_comments.pop()) # pair 1 on
                     point_1.draw()
                     point_2.draw()
                 elif .5 <= trial_clock.getTime() < 0.9:
-                    if len(stim_comments) == 3:
-                        tracker.comment(stim_comments.pop()) # pair 2 on
+                    # if len(stim_comments) == 3:
+                    #     tracker.comment(stim_comments.pop()) # pair 2 on
                     point_1.draw()
                     point_2.draw()
                     point_3.draw()
                     point_4.draw()
                 elif 0.9 <= trial_clock.getTime() < 1.3:
-                    if len(stim_comments) == 2:
-                        tracker.comment(stim_comments.pop()) # pair 1 off
+                    # if len(stim_comments) == 2:
+                    #     tracker.comment(stim_comments.pop()) # pair 1 off
                     point_3.draw()
                     point_4.draw()
         
@@ -476,13 +488,13 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
                 
                 event.clearEvents(eventType='keyboard') # just to be sure?
 
-            if len(stim_comments) == 1:
-                tracker.comment(stim_comments.pop()) # pair 2 off
+            # if len(stim_comments) == 1:
+            #     tracker.comment(stim_comments.pop()) # pair 2 off
 
         if abort:
             break
         
-        if not gaze_out: # what is this testing? gaze_out is always False... I think
+        if True: # what is this testing? gaze_out is always False... I think
         
             ## response
             fixation.ori += 45
@@ -499,7 +511,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
 
             if k[0] in ['q']:
                 abort = True
-                tracker.comment('trial aborted') # this could be more like: "task aborted"?
+                # tracker.comment('trial aborted') # this could be more like: "task aborted"?
                 break
                 #! empty buffer?
             elif k[0] in ['space', 'num_insert']:
@@ -508,11 +520,11 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
                 resp = 'abort'
                 targ_chosen = 'abort'
                 reversal = 'abort'
-                tracker.comment('trial aborted')
+                # tracker.comment('trial aborted')
                 #! empty buffer?
             else:
                 resp = 1 if k[0] in ['left', 'num_left'] else 2
-                tracker.comment('response')
+                # tracker.comment('response')
                 #! empty buffer?
 
             event.clearEvents(eventType='keyboard') # just to be sure?
@@ -524,76 +536,76 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             ## dealing with auto-aborted trials
         
             # auto recalibrate if no initial fixation
-            if recalibrate:
-                recalibrate = False
-                visual.TextStim(win,'Calibration...', color = col_both, units = 'deg', pos = (0,-2)).draw()
-                fixation.draw()
-                win.flip()
-                k = event.waitKeys()
-                if k[0] in ['q']:
-                    abort = True
-                    break
-                    #! empty buffer?
+            # if recalibrate:
+            #     recalibrate = False
+            #     visual.TextStim(win,'Calibration...', color = col_both, units = 'deg', pos = (0,-2)).draw()
+            #     fixation.draw()
+            #     win.flip()
+            #     k = event.waitKeys()
+            #     if k[0] in ['q']:
+            #         abort = True
+            #         break
+            #         #! empty buffer?
                 
-                event.clearEvents(eventType='keyboard') # just to be sure?
+            #     event.clearEvents(eventType='keyboard') # just to be sure?
                     
-                #!!# calibrate
-                # tracker.stopcollecting() # do we even have to stop/start collecting?
-                tracker.calibrate()
-                # tracker.startcollecting()
-                recalibrate = False
+            #     #!!# calibrate
+            #     # tracker.stopcollecting() # do we even have to stop/start collecting?
+            #     tracker.calibrate()
+            #     # tracker.startcollecting()
+            #     recalibrate = False
 
                 
-                fixation.draw()
-                win.flip()
-                k = event.waitKeys()
-                if k[0] in ['q']:
-                    abort = True
-                    break
-                    #! empty buffer?
+            #     fixation.draw()
+            #     win.flip()
+            #     k = event.waitKeys()
+            #     if k[0] in ['q']:
+            #         abort = True
+            #         break
+            #         #! empty buffer?
                 
-                event.clearEvents(eventType='keyboard') # just to be sure?
+            #     event.clearEvents(eventType='keyboard') # just to be sure?
             
-            # changing fixation to signify gaze out, restart with 'up' possibily of break and manual recalibration 'r' 
-            else:
-                hiFusion.draw()
-                loFusion.draw()
-                visual.TextStim(win, '#', height = letter_height, color = col_both).draw()
-                print('# auto abort')
-                win.flip()
+            # # changing fixation to signify gaze out, restart with 'up' possibily of break and manual recalibration 'r' 
+            # else:
+            #     hiFusion.draw()
+            #     loFusion.draw()
+            #     visual.TextStim(win, '#', height = letter_height, color = col_both).draw()
+            #     print('# auto abort')
+            #     win.flip()
 
-                k = ['wait']
-                while k[0] not in ['q', 'up', 'r', 'num_up']:
-                    k = event.waitKeys()
-                if k[0] in ['q']:
-                    abort = True
-                    break
-                    #! empty buffer?
+            #     k = ['wait']
+            #     while k[0] not in ['q', 'up', 'r', 'num_up']:
+            #         k = event.waitKeys()
+            #     if k[0] in ['q']:
+            #         abort = True
+            #         break
+            #         #! empty buffer?
         
-                # manual recalibrate
-                if k[0] in ['r']:
-                    visual.TextStim(win,'Calibration...', color = col_both, units = 'deg', pos = (0,-2)).draw()
-                    fixation.draw()
-                    win.flip()
-                    k = event.waitKeys()
-                    if k[0] in ['q']:
-                        abort = True
-                        break
+            #     # manual recalibrate
+            #     if k[0] in ['r']:
+            #         visual.TextStim(win,'Calibration...', color = col_both, units = 'deg', pos = (0,-2)).draw()
+            #         fixation.draw()
+            #         win.flip()
+            #         k = event.waitKeys()
+            #         if k[0] in ['q']:
+            #             abort = True
+            #             break
 
-                    #!!# calibrate
-                    # tracker.stopcollecting() # do we even have to stop/start collecting?
-                    tracker.calibrate()
-                    # tracker.startcollecting()
+            #         #!!# calibrate
+            #         # tracker.stopcollecting() # do we even have to stop/start collecting?
+            #         tracker.calibrate()
+            #         # tracker.startcollecting()
 
-                    fixation.draw()
-                    win.flip()
-                    k = event.waitKeys()
-                    if k[0] in ['q']:
-                        abort = True
-                        break
-                        #! empty buffer?
+            #         fixation.draw()
+            #         win.flip()
+            #         k = event.waitKeys()
+            #         if k[0] in ['q']:
+            #             abort = True
+            #             break
+            #             #! empty buffer?
 
-                event.clearEvents(eventType='keyboard') # just to be sure?
+            #     event.clearEvents(eventType='keyboard') # just to be sure?
                 
             position[which_stair] = position[which_stair] + [pos]
             increment = False
@@ -668,7 +680,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             breaktext.draw()
             win.flip()
             
-            tracker.comment('break')
+            # tracker.comment('break')
 
             on_break = True
             while on_break:
@@ -681,7 +693,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             event.clearEvents(eventType='keyboard') # just to be sure?
 
 
-            tracker.calibrate()
+            # tracker.calibrate()
             break_trial = 1
 
         event.clearEvents(eventType='keyboard') # just to be more sure?
@@ -691,12 +703,12 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
         respFile = open(data_path + filename + str(x) + '.txt','a')
         respFile.write("Run manually ended at " + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M") + "!")
         respFile.close()
-        tracker.comment('run aborted')
+        # tracker.comment('run aborted')
         # stop collecting?
         # close file?
         # shutdown eye-tracker?
     elif not any(stairs_ongoing):
-        tracker.comment('run finished')
+        # tracker.comment('run finished')
         print('run ended properly!')
 
     print(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M"))
