@@ -1640,7 +1640,7 @@ def localizeSetup( trackEyes, filefolder, filename, location=None, glasses='RG',
     paths = {} # worst case, we return an empty dictionary?
     if not task == None:
         paths['data']         = os.path.join('..', 'data', task )
-        paths['color']        = os.path.join('..', 'data', task, 'color' )
+        # paths['color']        = os.path.join('..', 'data', task, 'color' )
         paths['mapping']      = os.path.join('..', 'data', task, 'mapping' )
         paths['eyetracking']  = os.path.join('..', 'data', task, 'eyetracking', ID )
         for p in paths.keys():
