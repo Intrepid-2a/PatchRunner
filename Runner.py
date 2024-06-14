@@ -215,7 +215,7 @@ class MyFrame(wx.Frame):
 
 
     def generateRandomID(self, event):
-        newID = generateRandomParticipantID(prepend=self.location.lower()[:3]+'', nbytes=3)
+        newID = generateRandomParticipantID(prepend=self.location.lower()[:3]+'p', nbytes=3)
         self.participantID.SetValue(newID)
         self.toggleParticipantTaskButtons(event)
 
