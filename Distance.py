@@ -82,7 +82,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
     # ## path
     # main_path = 'C:/Users/clementa/Nextcloud/project_blindspot/blindspot_eye_tracker/'
     # data_path = main_path + 'data/'
-    main_path = '../data/distance_patch/'
+    main_path = '../data/distance/'
     data_path = main_path
     # eyetracking_path = main_path + 'eyetracking/' + ID + '/'
     
@@ -149,10 +149,12 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
 
     colors = setup['colors']
     col_both = colors['both']
-    if hemifield == 'left':
-        col_ipsi, col_contra = colors['left'], colors['right']
-    if hemifield == 'right':
-        col_contra, col_ipsi = colors['left'], colors['right']
+    # if hemifield == 'left':
+    #     col_ipsi, col_contra = colors['left'], colors['right']
+    # if hemifield == 'right':
+    #     col_contra, col_ipsi = colors['left'], colors['right']
+
+    col_ipsi, col_contra = colors['both'], colors['both']
 
     # if hemifield == 'left':
     #     col_ipsi, col_contra = colors['right'], colors['left']
