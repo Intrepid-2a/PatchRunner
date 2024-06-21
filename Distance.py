@@ -106,6 +106,8 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
                                     'Foil_loc',
                                     'Targ_len',
                                     'Difference',
+                                    'Targ_shift',
+                                    'Foil_shift',
                                     'Which_first',
                                     'Targ_chosen',
                                     'Reversal',
@@ -121,6 +123,8 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
         "Foil_loc",
         "Targ_len",
         "Difference",
+        "Targ_shift",
+        "Foil_shift",
         "Which_first",
         "Targ_chosen",
         "Reversal",
@@ -367,10 +371,10 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             point_3.pos = pol2cart(positions[pos[1]][0][0], positions[pos[1]][0][1]       + shift[1])
             point_4.pos = pol2cart(positions[pos[1]][1][0], positions[pos[1]][1][1] + dif + shift[1])
         else:
-            point_3.pos = pol2cart(positions[pos[0]][0][0], positions[pos[0]][0][1]       + shift[0])
-            point_4.pos = pol2cart(positions[pos[0]][1][0], positions[pos[0]][1][1]       + shift[0])
-            point_1.pos = pol2cart(positions[pos[1]][0][0], positions[pos[1]][0][1]       + shift[1])
-            point_2.pos = pol2cart(positions[pos[1]][1][0], positions[pos[1]][1][1] + dif + shift[1])
+            point_3.pos = pol2cart(positions[pos[0]][0][0], positions[pos[0]][0][1]       + shift[1])
+            point_4.pos = pol2cart(positions[pos[0]][1][0], positions[pos[0]][1][1]       + shift[1])
+            point_1.pos = pol2cart(positions[pos[1]][0][0], positions[pos[1]][0][1]       + shift[0])
+            point_2.pos = pol2cart(positions[pos[1]][1][0], positions[pos[1]][1][1] + dif + shift[0])
 
         # if eye[which_stair] == hemifield:
         #     point_1.fillColor = col_ipsi
@@ -564,7 +568,8 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             #         break
             #         #! empty buffer?
                 
-            #     event.clearEvents(eventType='keyboard') # just to be sure?
+            #     event.clearEvents(eventType='keyboard') # just to be sur           Targ_shift = shift[0]
+ e?
             
             # # changing fixation to signify gaze out, restart with 'up' possibily of break and manual recalibration 'r' 
             # else:
@@ -630,7 +635,8 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             reversal = False
             resps[which_stair] = resps[which_stair] + [targ_chosen]
             if  resps[which_stair][-2] != resps[which_stair][-1]:
-                reversal = True
+                reversal = True           Targ_shift = shift[0]
+ 
                 direction[which_stair] *= -1
                 revs[which_stair] += len(resps[which_stair]) > 2
                 
@@ -647,11 +653,20 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
         else:
             tar = tar_right
 
+        
+
+            # Targ_shift = shift[0]
+            # Foil_shift = shift[1]
+
+
+
         print(resp,
             pos[0],
             pos[1],
             tar,
             dif,
+            shift[0],
+            shift[1],
             which_first,
             targ_chosen,
             reversal,
@@ -666,6 +681,8 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
                                         pos[1],
                                         tar,
                                         dif,
+                                        shift[0],
+                                        shift[1],
                                         which_first,
                                         targ_chosen,
                                         reversal,
