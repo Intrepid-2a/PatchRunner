@@ -634,7 +634,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             reversal = False
             resps[which_stair] = resps[which_stair] + [targ_chosen]
             if  resps[which_stair][-2] != resps[which_stair][-1]:
-                reversal = True           Targ_shift = shift[0]
+                reversal = True
  
                 direction[which_stair] *= -1
                 revs[which_stair] += len(resps[which_stair]) > 2
