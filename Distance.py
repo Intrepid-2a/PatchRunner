@@ -568,8 +568,7 @@ def doDistanceTask(ID=None, hemifield=None, location=None):
             #         break
             #         #! empty buffer?
                 
-            #     event.clearEvents(eventType='keyboard') # just to be sur           Targ_shift = shift[0]
- e?
+            #     event.clearEvents(eventType='keyboard') # just to be sure?
             
             # # changing fixation to signify gaze out, restart with 'up' possibily of break and manual recalibration 'r' 
             # else:
