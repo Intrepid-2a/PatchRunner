@@ -3,11 +3,24 @@
 # GUI elements, and interaction with OS
 import wx, wx.adv, os
 
+# we need to open webbrowsers to fill in the demographics form:
+import webbrowser as wb
+
 # functions for Runner
 from utilities import *
 
 from calibration import *
 from Distance import *
+
+
+
+# https://yorkufoh.ca1.qualtrics.com/jfe/form/SV_7U7ei3tzuPgJyvA
+# https://yorkufoh.ca1.qualtrics.com/jfe/form/SV_7U7ei3tzuPgJyvA?id=marius
+
+
+        # newURL = 'https://yorkufoh.ca1.qualtrics.com/jfe/form/SV_cZ7siSsepnvqtOS?id=%s'%(self.text_participantID.GetLabel())
+        # self.hyperlink_qualtrics.SetURL(newURL)
+        # self.hyperlink_qualtrics.SetLabel('questionnaire')
 
 
 class MyFrame(wx.Frame):
@@ -40,6 +53,8 @@ class MyFrame(wx.Frame):
         self.pick_existing = wx.ComboBox(self, id=wx.ID_ANY, choices=self.existingParticipants, style=wx.CB_READONLY)
         self.random_generate = wx.Button(self, wx.ID_ANY, "generate random")
         self.participantID = wx.TextCtrl(self, wx.ID_ANY, "")
+
+        self.QualtricsLink = wx.adv.HyperlinkCtrl(self, wx.ID_ANY, "demographics", " ")
 
 
         # task elements:
@@ -90,6 +105,8 @@ class MyFrame(wx.Frame):
         self.Bind(wx.EVT_COMBOBOX, self.pickExisting, self.pick_existing)
         self.Bind(wx.EVT_BUTTON, self.generateRandomID, self.random_generate)
 
+        self.Bind(wx.adv.EVT_HYPERLINK, self.onClickQualtrics, self.QualtricsLink)
+
         # task button functionality:
         # self.Bind(wx.EVT_BUTTON, self.runTask, self.dist_color)
         self.Bind(wx.EVT_BUTTON, self.runTask, self.dist_mapping)
@@ -137,7 +154,7 @@ class MyFrame(wx.Frame):
 
         main_grid        = wx.GridSizer(4, 1, 0, 0)
         # location thing is 1 item, no grid needed...
-        participant_grid = wx.GridSizer(2, 3, 0, 0)
+        participant_grid = wx.GridSizer(3, 3, 0, 0)
         # taskrun_grid     = wx.GridSizer(3, 6, 0, 0)
         taskrun_grid     = wx.GridSizer(1, 6, 0, 0)
         synch_grid       = wx.GridSizer(2, 4, 0, 0)  # too much?
@@ -151,6 +168,8 @@ class MyFrame(wx.Frame):
         participant_grid.Add(self.refresh_button, 0, wx.ALIGN_LEFT, 0)
         participant_grid.Add(self.pick_existing, 0, wx.ALIGN_LEFT, 0)
         participant_grid.Add(self.participantID, 0, wx.ALIGN_LEFT, 0)
+
+        participant_grid.Add(self.QualtricsLink, 0, wx.ALIGN_LEFT, 0)
         # add participant grid to main grid:
         main_grid.Add(participant_grid)
 
@@ -212,13 +231,27 @@ class MyFrame(wx.Frame):
     def pickExisting(self, event):
         self.participantID.SetValue(self.pick_existing.GetValue())
         self.toggleParticipantTaskButtons(event)
+        self.setQualtricsURL()
 
 
     def generateRandomID(self, event):
         newID = generateRandomParticipantID(prepend=self.location.lower()[:3]+'p', nbytes=3)
         self.participantID.SetValue(newID)
         self.toggleParticipantTaskButtons(event)
+        self.setQualtricsURL()
 
+    def setQualtricsURL(self):
+        newURL = 'https://yorkufoh.ca1.qualtrics.com/jfe/form/SV_7U7ei3tzuPgJyvA?id=%s'%(self.participantID.GetValue())
+        self.QualtricsLink.SetURL(newURL)
+        self.QualtricsLink.SetLabel('demographics')
+
+
+    def onClickQualtrics(self, e):
+
+        wb.open( url = self.QualtricsLink.GetURL(),
+                 new = 1,
+                 autoraise = True )
+        
 
     def toggleParticipantTaskButtons(self, event):
 
